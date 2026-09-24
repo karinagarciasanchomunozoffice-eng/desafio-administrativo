@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director de Hospital: El Desafío Administrativo - Diseño del Juego</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 3px solid #667eea;
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 1em;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            min-width: 150px;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            padding: 40px;
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .rules-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rules-list li {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #764ba2;
+        }
+
+        .rules-list li strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+            cursor: pointer;
+            border: 3px solid #667eea;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .card-header h4 {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .card-content {
+            padding: 10px;
+        }
+
+        .card-content p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .card-content strong {
+            color: #667eea;
+        }
+
+        .crisis-card {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            border: 3px solid #c92a2a;
+        }
+
+        .crisis-card .card-header {
+            background: rgba(0,0,0,0.3);
+        }
+
+        .crisis-card .card-content strong {
+            color: #fff3cd;
+        }
+
+        .highlight-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .highlight-box strong {
+            color: #856404;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 3px;
+        }
+
+        .badge-school {
+            background: #667eea;
+            color: white;
+        }
+
+        .badge-approach {
+            background: #764ba2;
+            color: white;
+        }
+
+        .badge-risk {
+            background: #dc3545;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .flip-card {
+            perspective: 1000px;
+            height: 400px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .flip-card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .flip-card-back {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+            border: 3px solid #667eea;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                min-width: auto;
+            }
+        }
+
+        .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 Director de Hospital: El Desafío Administrativo</h1>
+            <p>Diseño Completo del Juego Educativo de Cartas y Tablero</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab active" onclick="showTab('mecanica')">📋 Mecánica y Reglas</button>
+            <button class="tab" onclick="showTab('cartas-enfoque')">🎴 Cartas de Enfoque</button>
+            <button class="tab" onclick="showTab('cartas-crisis')">🚨 Cartas de Crisis</button>
+            <button class="tab" onclick="showTab('tablero')">🎯 Tablero y Componentes</button>
+        </div>
+
+        <div id="mecanica" class="content active">
+            <h2>1. Mecánica Principal y Reglas</h2>
+            
+            <div class="section">
+                <h3>🎯 Objetivo del Juego</h3>
+                <p>Ser el primer Director de Hospital en completar <strong>5 proyectos de mejora</strong> exitosos, demostrando dominio de las 9 escuelas del pensamiento administrativo aplicadas a la gestión en salud.</p>
+            </div>
+
+            <div class="section">
+                <h3>📦 Componentes</h3>
+                <ul class="rules-list">
+                    <li><strong>9 Cartas de Enfoque:</strong> Una por cada escuela/enfoque administrativo</li>
+                    <li><strong>9 Cartas de Crisis Hospitalaria:</strong> Escenarios que requieren solución específica</li>
+                    <li><strong>1 Tablero de Hospital:</strong> Con 5 espacios para proyectos</li>
+                    <li><strong>Fichas de Recursos:</strong> Presupuesto, Personal, Tiempo, Calidad</li>
+                    <li><strong>Dado de 6 caras</strong></li>
+                    <li><strong>2-4 jugadores</strong> (Directores de Hospital)</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>🎮 Preparación</h3>
+                <ol class="rules-list">
+                    <li><span class="step-number">1</span>Cada jugador recibe <strong>3 Cartas de Enfoque</strong> al azar</li>
+                    <li><span class="step-number">2</span>Se colocan <strong>4 Fichas de Recursos</strong> en 10 puntos cada una</li>
+                    <li><span class="step-number">3</span>Las <strong>Cartas de Crisis</strong> se barajan y se colocan boca abajo</li>
+                    <li><span class="step-number">4</span>El tablero muestra <strong>5 espacios vacíos</strong> para proyectos</li>
+                </ol>
+            </div>
+
+            <div class="section">
+                <h3>🔄 Turno de Juego (Paso a Paso)</h3>
+                <ol class="rules-list">
+                    <li>
+                        <strong>Fase 1: Revelar Crisis</strong><br>
+                        El jugador voltea una <strong>Carta de Crisis Hospitalaria</strong> y la lee en voz alta. Todos los jugadores analizan el escenario.
+                    </li>
+                    <li>
+                        <strong>Fase 2: Selección de Enfoque</strong><br>
+                        Cada jugador (empezando por el activo) puede <strong>ofrecer una solución</strong> usando una de sus Cartas de Enfoque. Debe explicar:
+                        <ul style="margin-top: 10px; margin-left: 20px;">
+                            <li>¿Qué escuela/enfoque está aplicando?</li>
+                            <li>¿Cómo resuelve el problema específico?</li>
+                            <li>¿Qué limitaciones debe gestionar?</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Fase 3: Evaluación</strong><br>
+                        Se revela la <strong>solución ideal</strong> (indicada en la parte posterior de la Carta de Crisis). Si el jugador usó el enfoque correcto:
+                        <ul style="margin-top: 10px; margin-left: 20px;">
+                            <li>✅ <strong>Éxito:</strong> Gana 1 punto de proyecto</li>
+                            <li>✅ Recupera 2 puntos en todos los recursos</li>
+                            <li>✅ Roba 1 carta adicional</li>
+                        </ul>
+                        Si usó un enfoque incorrecto pero viable:
+                        <ul style="margin-top: 10px; margin-left: 20px;">
+                            <li>⚠️ <strong>Parcial:</strong> Gana 0.5 puntos de proyecto</li>
+                            <li>⚠️ Pierde 1 punto en un recurso aleatorio</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Fase 4: Mecánica de Riesgo (Limitaciones)</strong><br>
+                        Si el jugador menciona la <strong>limitación</strong> de su enfoque y explica cómo mitigarla:
+                        <ul style="margin-top: 10px; margin-left: 20px;">
+                            <li>🛡️ <strong>Bonus de Mitigación:</strong> Evita penalizaciones adicionales</li>
+                        </ul>
+                        Si NO menciona la limitación:
+                        <ul style="margin-top: 10px; margin-left: 20px;">
+                            <li>⚠️ <strong>Tira el dado:</strong> Si sale 1-2, pierde 2 puntos en un recurso</li>
+                            <li>⚠️ Si sale 3-4, pierde 1 punto en dos recursos</li>
+                            <li>⚠️ Si sale 5-6, no hay penalización (suerte del director novato)</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Fase 5: Robar Carta</strong><br>
+                        El jugador roba 1 Carta de Enfoque del mazo (si quedan). Si no hay cartas, el turno pasa al siguiente jugador.
+                    </li>
+                </ol>
+            </div>
+
+            <div class="section">
+                <h3>⚠️ Mecánica de Riesgo: Las Limitaciones</h3>
+                <p>Cada escuela tiene <strong>limitaciones inherentes</strong> que se convierten en mecánicas de riesgo:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Enfoque</th>
+                            <th>Limitación</th>
+                            <th>Mecánica de Riesgo en el Juego</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1. Administración Científica</strong></td>
+                            <td>Mecanizar el trabajo, reducir al trabajador</td>
+                            <td>Pierde 2 puntos de "Personal" si no mitigas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. Escuela Clásica</strong></td>
+                            <td>Estructuras rígidas y jerárquicas</td>
+                            <td>Pierde 2 puntos de "Tiempo" por burocracia</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. Relaciones Humanas</strong></td>
+                            <td>Subestimar conflicto y estructura</td>
+                            <td>Pierde 2 puntos de "Calidad" por falta de control</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. Estructuralista</strong></td>
+                            <td>Excesivo enfoque en estructuras</td>
+                            <td>Pierde 2 puntos de "Presupuesto" por rigidez</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5. Behaviorista</strong></td>
+                            <td>Generalizaciones sin respaldo empírico</td>
+                            <td>Pierde 2 puntos de "Personal" por expectativas irreales</td>
+                        </tr>
+                        <tr>
+                            <td><strong>6. Cuantitativa</strong></td>
+                            <td>No captura complejidad humana y ética</td>
+                            <td>Pierde 2 puntos de "Personal" y "Calidad"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>7. Sistemas</strong></td>
+                            <td>Abstracto si no se traduce en decisiones</td>
+                            <td>Pierde 2 puntos de "Tiempo" por análisis excesivo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>8. Contingencia</strong></td>
+                            <td>Demasiado abierto sin especificar variables</td>
+                            <td>Pierde 2 puntos de "Presupuesto" por falta de foco</td>
+                        </tr>
+                        <tr>
+                            <td><strong>9. Contemporáneo</strong></td>
+                            <td>Categoría demasiado amplia sin orden</td>
+                            <td>Pierde 1 punto en todos los recursos por dispersión</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h3>🏆 Cómo Ganar</h3>
+                <div class="highlight-box">
+                    <p><strong>Condición de Victoria:</strong> El primer jugador en completar <strong>5 puntos de proyecto</strong> gana el juego.</p>
+                </div>
+                <p><strong>Condiciones de Derrota:</strong> Si algún recurso (Presupuesto, Personal, Tiempo o Calidad) llega a <strong>0 puntos</strong>, el jugador pierde 1 punto de proyecto y debe recuperar ese recurso a 5 puntos antes de continuar ganando proyectos.</p>
+            </div>
+
+            <div class="section">
+                <h3>🔄 Cómo Perder Turnos</h3>
+                <ul class="rules-list">
+                    <li><strong>Recurso en Cero:</strong> Pierdes tu siguiente turno mientras recuperas el recurso</li>
+                    <li><strong>Tres Errores Consecutivos:</strong> Si fallas 3 crisis seguidas, pierdes 1 turno para "revisar protocolos"</li>
+                    <li><strong>Carta de Enfoque Incorrecta:</strong> Si juegas una carta que no tienes (error), pierdes el turno</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="cartas-enfoque" class="content">
+            <h2>2. Diseño de las Cartas de 'Enfoque'</h2>
+            
+            <div class="section">
+                <h3>📐 Estructura Visual de Cada Carta</h3>
+                <p>Cada carta tiene <strong>dos caras</strong> (anverso y reverso) con información específica:</p>
+            </div>
+
+            <h3>🎴 ANVERSO (Cara Frontal)</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">⚙️</div>
+                        <h4>1. Administración Científica</h4>
+                        <p><span class="badge badge-school">Escuela</span> 1900-1920</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autores:</strong> F.W. Taylor, Frank y Lillian Gilbreth, Henry Gantt</p>
+                        <p><strong>Idea Central:</strong> Buscar métodos racionales y eficientes para realizar el trabajo</p>
+                        <p><strong>Aportes:</strong> Tiempos y movimientos, estandarización, división planificación/ejecución, productividad</p>
+                        <p><strong>Aplicación en Salud:</strong> Analizar tiempos de espera, distribución del trabajo, duración y secuencia de procedimientos</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">🏛️</div>
+                        <h4>2. Escuela Clásica</h4>
+                        <p><span class="badge badge-school">Escuela</span> 1916-1930</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autor:</strong> Henri Fayol</p>
+                        <p><strong>Idea Central:</strong> La eficiencia depende de cómo se administra y estructura toda la organización</p>
+                        <p><strong>Aportes:</strong> Funciones administrativas, jerarquía, autoridad, unidad de mando, coordinación</p>
+                        <p><strong>Aplicación en Salud:</strong> Definir dirección, departamentos, responsabilidades, autoridad y funciones de un hospital</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">👥</div>
+                        <h4>3. Relaciones Humanas</h4>
+                        <p><span class="badge badge-school">Escuela</span> 1930-1950</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autores:</strong> Elton Mayo, F.J. Roethlisberger, William Dickson</p>
+                        <p><strong>Idea Central:</strong> El trabajador es un ser social; los grupos influyen en su desempeño</p>
+                        <p><strong>Aportes:</strong> Organización informal, comunicación, grupos, moral, clima laboral, liderazgo interpersonal</p>
+                        <p><strong>Aplicación en Salud:</strong> Analizar clima laboral, comunicación y cohesión de equipos clínicos</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">🏗️</div>
+                        <h4>4. Estructuralista</h4>
+                        <p><span class="badge badge-school">Escuela</span> 1940-1960</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autores:</strong> Max Weber, Amitai Etzioni, Philip Selznick, Peter Blau, Alvin Gouldner</p>
+                        <p><strong>Idea Central:</strong> La organización es una estructura social compleja con autoridad, normas, poder, conflicto</p>
+                        <p><strong>Aportes:</strong> Burocracia, autoridad racional-legal, poder, conflicto, estructura formal e informal</p>
+                        <p><strong>Aplicación en Salud:</strong> Estudiar burocracia hospitalaria, jerarquías profesionales, conflictos entre autoridad clínica y administrativa</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">🧠</div>
+                        <h4>5. Behaviorista</h4>
+                        <p><span class="badge badge-school">Escuela</span> 1940-1970</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autores:</strong> Herbert Simon, Douglas McGregor, Chris Argyris, Frederick Herzberg, Maslow</p>
+                        <p><strong>Idea Central:</strong> Comprender cómo las personas deciden, se motivan y actúan en las organizaciones</p>
+                        <p><strong>Aportes:</strong> Motivación, liderazgo, racionalidad limitada, decisiones, participación, desarrollo organizacional</p>
+                        <p><strong>Aplicación en Salud:</strong> Diseñar liderazgo, incentivos, participación profesional y estrategias de motivación</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">📊</div>
+                        <h4>6. Cuantitativa</h4>
+                        <p><span class="badge badge-school">Escuela</span> 1930-1970</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autores:</strong> Philip Morse, George Dantzig, investigadores de operaciones</p>
+                        <p><strong>Idea Central:</strong> Usar matemáticas, estadística y modelos para mejorar decisiones administrativas</p>
+                        <p><strong>Aportes:</strong> Optimización, programación lineal, simulación, teoría de colas, teoría de juegos</p>
+                        <p><strong>Aplicación en Salud:</strong> Optimizar camas, quirófanos, turnos, inventarios, ambulancias y tiempos de espera</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">🔄</div>
+                        <h4>7. Enfoque de Sistemas</h4>
+                        <p><span class="badge badge-approach">Enfoque</span> 1950-1970</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autores:</strong> Ludwig von Bertalanffy, Daniel Katz, Robert Kahn</p>
+                        <p><strong>Idea Central:</strong> La organización es un sistema abierto con subsistemas interdependientes</p>
+                        <p><strong>Aportes:</strong> Interdependencia, entradas-procesos-resultados, retroalimentación, entorno, visión integral</p>
+                        <p><strong>Aplicación en Salud:</strong> Comprender el hospital relacionado con atención primaria, comunidad, financiamiento, regulación</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">🎯</div>
+                        <h4>8. Enfoque de Contingencia</h4>
+                        <p><span class="badge badge-approach">Enfoque</span> 1960-1970</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autores:</strong> Tom Burns, G.M. Stalker, Paul Lawrence, Jay Lorsch, Joan Woodward</p>
+                        <p><strong>Idea Central:</strong> No existe una única manera óptima; la respuesta depende del contexto</p>
+                        <p><strong>Aportes:</strong> Ambiente, tecnología, tamaño, incertidumbre y situación como variables de gestión</p>
+                        <p><strong>Aplicación en Salud:</strong> Una clínica rural pequeña no debe organizarse como un hospital universitario de tercer nivel</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="icon">🌟</div>
+                        <h4>9. Pensamiento Contemporáneo</h4>
+                        <p><span class="badge badge-approach">Enfoque</span> 1980-Actualidad</p>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Autores:</strong> James A.F. Stoner, R. Edward Freeman, Daniel R. Gilbert Jr.</p>
+                        <p><strong>Idea Central:</strong> Integra perspectivas para organizaciones complejas, cambiantes, globalizadas</p>
+                        <p><strong>Aportes:</strong> Calidad, estrategia, procesos, aprendizaje, conocimiento, innovación, agilidad, ética, sostenibilidad</p>
+                        <p><strong>Aplicación en Salud:</strong> Integrar calidad asistencial, estrategia, ética, experiencia del paciente, innovación, aprendizaje</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔄 REVERSO (Cara Posterior)</h3>
+            <div class="section">
+                <p>El reverso de cada carta contiene:</p>
+                <ul class="rules-list">
+                    <li><strong>⚠️ Limitación Principal:</strong> La debilidad inherente del enfoque</li>
+                    <li><strong>🛡️ Estrategia de Mitigación:</strong> Cómo compensar esa limitación en la práctica</li>
+                    <li><strong>🎲 Mecánica de Riesgo:</strong> Qué penalización aplica si no se menciona la limitación</li>
+                    <li><strong>💡 Consejo del Experto:</strong> Tip práctico para usar este enfoque en gerencia de salud</li>
+                </ul>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header" style="background: #dc3545;">
+                        <h4>⚠️ Limitaciones y Mitigaciones</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>1. Admin. Científica:</strong></p>
+                        <p><em>Limitación:</em> Riesgo de mecanizar el trabajo y reducir al trabajador a ejecutor</p>
+                        <p><em>Mitigación:</em> Complementar con enfoque de Relaciones Humanas para mantener motivación</p>
+                        
+                        <p style="margin-top: 15px;"><strong>2. Escuela Clásica:</strong></p>
+                        <p><em>Limitación:</em> Tiende a suponer estructuras relativamente estables y jerárquicas</p>
+                        <p><em>Mitigación:</em> Usar Contingencia para adaptar la estructura al contexto cambiante</p>
+                        
+                        <p style="margin-top: 15px;"><strong>3. Relaciones Humanas:</strong></p>
+                        <p><em>Limitación:</em> Puede sobrevalorar la armonía y subestimar poder, conflicto, estructura</p>
+                        <p><em>Mitigación:</em> Complementar con Estructuralista para gestionar conflictos y poder</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="background: #dc3545;">
+                        <h4>⚠️ Limitaciones y Mitigaciones (cont.)</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>4. Estructuralista:</strong></p>
+                        <p><em>Limitación:</em> Puede enfatizar excesivamente estructuras y categorías organizacionales</p>
+                        <p><em>Mitigación:</em> Usar Sistemas para mantener visión integral más allá de la estructura</p>
+                        
+                        <p style="margin-top: 15px;"><strong>5. Behaviorista:</strong></p>
+                        <p><em>Limitación:</em> Algunas teorías motivacionales se han generalizado más allá de su respaldo empírico</p>
+                        <p><em>Mitigación:</em> Validar con datos locales y adaptar al contexto específico del hospital</p>
+                        
+                        <p style="margin-top: 15px;"><strong>6. Cuantitativa:</strong></p>
+                        <p><em>Limitación:</em> Lo cuantificable no representa toda la complejidad humana, ética y política</p>
+                        <p><em>Mitigación:</em> Complementar con Contemporáneo para incluir ética y experiencia del paciente</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="background: #dc3545;">
+                        <h4>⚠️ Limitaciones y Mitigaciones (cont.)</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>7. Sistemas:</strong></p>
+                        <p><em>Limitación:</em> Puede resultar abstracto si no se traduce en variables y decisiones concretas</p>
+                        <p><em>Mitigación:</em> Usar Cuantitativa para operacionalizar con métricas y modelos específicos</p>
+                        
+                        <p style="margin-top: 15px;"><strong>8. Contingencia:</strong></p>
+                        <p><em>Limitación:</em> Puede resultar demasiado abierto si no se especifican las contingencias relevantes</p>
+                        <p><em>Mitigación:</em> Definir claramente las variables contextuales antes de tomar decisiones</p>
+                        
+                        <p style="margin-top: 15px;"><strong>9. Contemporáneo:</strong></p>
+                        <p><em>Limitación:</em> No constituye una teoría única y puede volverse demasiado amplia sin orden</p>
+                        <p><em>Mitigación:</em> Priorizar 2-3 enfoques específicos según el problema actual</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cartas-crisis" class="content">
+            <h2>3. Diseño de las Cartas de 'Crisis Hospitalaria'</h2>
+            
+            <div class="section">
+                <h3>🎯 Estructura de Cada Carta de Crisis</h3>
+                <ul class="rules-list">
+                    <li><strong>🚨 Escenario:</strong> Descripción del problema hospitalario</li>
+                    <li><strong>🎯 Enfoque Ideal:</strong> La escuela/enfoque que mejor resuelve este problema</li>
+                    <li><strong>⚠️ Enfoques Alternativos:</strong> Otros enfoques que podrían funcionar parcialmente</li>
+                    <li><strong>❌ Enfoques Inadecuados:</strong> Enfoques que NO deberían usarse para este problema</li>
+                    <li><strong>💰 Costo de Recursos:</strong> Cuántos puntos de recursos consume resolver esta crisis</li>
+                </ul>
+            </div>
+
+            <h3>🚨 Las 9 Cartas de Crisis</h3>
+            <div class="card-grid">
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #1: Tiempos de Espera Críticos</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> Los pacientes esperan 4 horas en urgencias. El flujo de pacientes es caótico, no hay estándar en los procedimientos y el personal trabaja de forma desorganizada.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-school">1. Administración Científica</span></p>
+                        <p><strong>Por qué:</strong> Necesitas analizar tiempos y movimientos, estandarizar procedimientos y optimizar la secuencia de atención.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-school">6. Cuantitativa</span> (para modelar flujos)</p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">3. Relaciones Humanas</span> (no resuelve el problema estructural)</p>
+                        <p><strong>💰 Costo:</strong> -2 Presupuesto, -1 Tiempo</p>
+                    </div>
+                </div>
+
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #2: Conflicto de Autoridad</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> El director médico y el director administrativo se contradicen constantemente. Los departamentos no saben a quién obedecer y hay duplicidad de funciones.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-school">2. Escuela Clásica</span></p>
+                        <p><strong>Por qué:</strong> Necesitas definir claramente autoridad, jerarquía, unidad de mando y coordinación entre departamentos.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-school">4. Estructuralista</span> (para analizar poder)</p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">6. Cuantitativa</span> (no resuelve conflictos de poder)</p>
+                        <p><strong>💰 Costo:</strong> -2 Personal, -1 Calidad</p>
+                    </div>
+                </div>
+
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #3: Burnout del Personal</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> Enfermeras y médicos reportan alto estrés, baja moral y conflictos interpersonales. La rotación de personal ha aumentado 40% en 6 meses.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-school">3. Relaciones Humanas</span></p>
+                        <p><strong>Por qué:</strong> Necesitas mejorar el clima laboral, la comunicación, la cohesión de equipos y el liderazgo interpersonal.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-school">5. Behaviorista</span> (para motivación)</p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">1. Administración Científica</span> (empeoraría el problema)</p>
+                        <p><strong>💰 Costo:</strong> -3 Personal, -1 Tiempo</p>
+                    </div>
+                </div>
+
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #4: Burocracia Excesiva</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> Los trámites administrativos toman semanas. Hay 15 niveles de aprobación para decisiones simples. El personal clínico pierde tiempo en papeleo.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-school">4. Estructuralista</span></p>
+                        <p><strong>Por qué:</strong> Necesitas analizar la estructura formal, las normas, el poder y rediseñar los procesos burocráticos.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-school">2. Escuela Clásica</span> (para reorganizar)</p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">3. Relaciones Humanas</span> (no ataca la estructura)</p>
+                        <p><strong>💰 Costo:</strong> -2 Tiempo, -2 Presupuesto</p>
+                    </div>
+                </div>
+
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #5: Baja Motivación</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> Los profesionales de salud cumplen horarios pero no muestran iniciativa. No hay participación en decisiones y la productividad ha caído 25%.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-school">5. Behaviorista</span></p>
+                        <p><strong>Por qué:</strong> Necesitas diseñar estrategias de motivación, liderazgo participativo, incentivos y desarrollo organizacional.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-school">3. Relaciones Humanas</span> (para clima laboral)</p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">1. Administración Científica</span> (no aborda motivación intrínseca)</p>
+                        <p><strong>💰 Costo:</strong> -2 Personal, -1 Presupuesto</p>
+                    </div>
+                </div>
+
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #6: Quirófanos Subutilizados</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> Los quirófanos están ocupados solo 40% del tiempo disponible. Hay cuellos de botella en la programación y los inventarios de insumos son inadecuados.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-school">6. Cuantitativa</span></p>
+                        <p><strong>Por qué:</strong> Necesitas optimizar con modelos matemáticos, programación lineal, teoría de colas y simulación de flujos.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-school">1. Administración Científica</span> (para tiempos)</p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">3. Relaciones Humanas</span> (no resuelve optimización)</p>
+                        <p><strong>💰 Costo:</strong> -3 Presupuesto, -1 Tiempo</p>
+                    </div>
+                </div>
+
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #7: Desconexión con la Comunidad</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> El hospital opera como una isla. No hay coordinación con atención primaria, los pacientes retornan con problemas no resueltos y la comunidad no confía en el servicio.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-approach">7. Enfoque de Sistemas</span></p>
+                        <p><strong>Por qué:</strong> Necesitas ver el hospital como sistema abierto, interconectado con atención primaria, comunidad, financiamiento y regulación.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-approach">9. Contemporáneo</span> (para integración)</p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">2. Escuela Clásica</span> (visión interna únicamente)</p>
+                        <p><strong>💰 Costo:</strong> -2 Presupuesto, -2 Personal</p>
+                    </div>
+                </div>
+
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #8: Apertura de Clínica Rural</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> Debes organizar una nueva clínica en zona rural con recursos limitados, personal reducido y necesidades diferentes al hospital urbano principal.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-approach">8. Enfoque de Contingencia</span></p>
+                        <p><strong>Por qué:</strong> No existe una única manera óptima. Debes adaptar la organización al contexto específico: tamaño, tecnología, ambiente, incertidumbre.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-approach">7. Sistemas</span> (para ver contexto)</p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">2. Escuela Clásica</span> (estructura rígida inadecuada)</p>
+                        <p><strong>💰 Costo:</strong> -3 Presupuesto, -2 Tiempo</p>
+                    </div>
+                </div>
+
+                <div class="card crisis-card">
+                    <div class="card-header">
+                        <h4>🚨 Crisis #9: Transformación Digital</h4>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>Escenario:</strong> El hospital debe implementar historiales electrónicos, telemedicina y análisis de datos. Hay resistencia al cambio, falta de capacitación y necesidad de integrar múltiples sistemas.</p>
+                        <p><strong>🎯 Enfoque Ideal:</strong> <span class="badge badge-approach">9. Pensamiento Contemporáneo</span></p>
+                        <p><strong>Por qué:</strong> Necesitas integrar calidad, estrategia, innovación, aprendizaje, agilidad, ética y gestión del conocimiento en un entorno complejo y cambiante.</p>
+                        <p><strong>⚠️ Alternativas:</strong> <span class="badge badge-approach">7. Sistemas</span> + <span class="badge badge-school">5. Behaviorista</span></p>
+                        <p><strong>❌ Inadecuado:</strong> <span class="badge badge-school">1. Administración Científica</span> (enfoque limitado)</p>
+                        <p><strong>💰 Costo:</strong> -4 Presupuesto, -2 Personal, -2 Tiempo</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>💡 Mecánica de Crisis Múltiples</h3>
+                <p>En niveles avanzados del juego, pueden aparecer <strong>crisis combinadas</strong> que requieren usar <strong>2 enfoques simultáneamente</strong>. Por ejemplo:</p>
+                <ul class="rules-list">
+                    <li><strong>Crisis #1 + #3:</strong> Tiempos de espera + Burnout → Necesitas Admin. Científica + Relaciones Humanas</li>
+                    <li><strong>Crisis #6 + #7:</strong> Quirófanos + Desconexión → Necesitas Cuantitativa + Sistemas</li>
+                    <li><strong>Crisis #4 + #9:</strong> Burocracia + Transformación Digital → Necesitas Estructuralista + Contemporáneo</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="tablero" class="content">
+            <h2>4. Tablero y Componentes Adicionales</h2>
+            
+            <div class="section">
+                <h3>🎯 Diseño del Tablero</h3>
+                <p>El tablero representa un <strong>Hospital</strong> con las siguientes zonas:</p>
+                <ul class="rules-list">
+                    <li><strong>🏥 Centro del Hospital:</strong> Espacio para los 5 proyectos completados</li>
+                    <li><strong>📊 Panel de Recursos:</strong> 4 medidores (Presupuesto, Personal, Tiempo, Calidad) de 0-15 puntos</li>
+                    <li><strong>🎴 Mazo de Crisis:</strong> Espacio para las cartas de crisis boca abajo</li>
+                    <li><strong>🎴 Mazo de Enfoques:</strong> Espacio para las cartas de enfoque disponibles</li>
+                    <li><strong>🗑️ Descartes:</strong> Espacio para cartas de crisis ya resueltas</li>
+                    <li><strong>👤 Áreas de Jugadores:</strong> Espacio para que cada jugador coloque sus cartas y recursos personales</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>🎲 Componentes Físicos</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Cantidad</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tablero</strong></td>
+                            <td>1</td>
+                            <td>Cartón rígido 50x50cm con diseño de hospital</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cartas de Enfoque</strong></td>
+                            <td>9</td>
+                            <td>Cartas tamaño estándar (63x88mm) con diseño profesional</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cartas de Crisis</strong></td>
+                            <td>9</td>
+                            <td>Cartas tamaño estándar con borde rojo distintivo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fichas de Recursos</strong></td>
+                            <td>8 sets</td>
+                            <td>2 sets por jugador (4 fichas cada set: Presupuesto, Personal, Tiempo, Calidad)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Marcadores de Proyecto</strong></td>
+                            <td>20</td>
+                            <td>5 por jugador para marcar proyectos completados</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dado</strong></td>
+                            <td>1</td>
+                            <td>Dado de 6 caras estándar</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Manual de Reglas</strong></td>
+                            <td>1</td>
+                            <td>Folleto con reglas completas y ejemplos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h3>🎨 Diseño Visual</h3>
+                <p><strong>Paleta de Colores:</strong></p>
+                <ul class="rules-list">
+                    <li><strong>Azul (#667eea):</strong> Color principal, representa profesionalismo y confianza</li>
+                    <li><strong>Púrpura (#764ba2):</strong> Color secundario, representa sabiduría y experiencia</li>
+                    <li><strong>Rojo (#dc3545):</strong> Para cartas de crisis y limitaciones</li>
+                    <li><strong>Verde (#28a745):</strong> Para éxitos y proyectos completados</li>
+                    <li><strong>Amarillo (#ffc107):</strong> Para advertencias y mitigaciones</li>
+                </ul>
+                <p><strong>Iconografía:</strong></p>
+                <ul class="rules-list">
+                    <li>Cada enfoque tiene un ícono distintivo (⚙️ 🏛️ 👥 🏗️ 🧠 📊 🔄 🎯 🌟)</li>
+                    <li>Las cartas de crisis usan íconos de alerta (🚨 ⚠️ 🆘)</li>
+                    <li>Los recursos tienen íconos claros (💰 👥 ⏰ ✅)</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>🎓 Valor Educativo</h3>
+                <p>Este juego está diseñado para lograr los siguientes objetivos de aprendizaje:</p>
+                <ul class="rules-list">
+                    <li><strong>Memorización:</strong> Los jugadores memorizan las 9 escuelas/enfoques al usarlas repetidamente</li>
+                    <li><strong>Comprensión:</strong> Al explicar cómo cada enfoque resuelve problemas, profundizan su comprensión</li>
+                    <li><strong>Aplicación:</strong> Las crisis hospitalarias contextualizan el aprendizaje en gerencia de salud</li>
+                    <li><strong>Análisis Crítico:</strong> Las limitaciones enseñan que ningún enfoque es perfecto</li>
+                    <li><strong>Pensamiento Sistémico:</strong> Las crisis múltiples enseñan a integrar enfoques</li>
+                    <li><strong>Toma de Decisiones:</strong> Los recursos limitados simulan la realidad de la gestión hospitalaria</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>🔄 Variantes del Juego</h3>
+                <h4>Modo Básico (Principiantes)</h4>
+                <ul class="rules-list">
+                    <li>3 proyectos para ganar</li>
+                    <li>Solo crisis individuales</li>
+                    <li>Sin penalizaciones por no mencionar limitaciones</li>
+                </ul>
+                <h4>Modo Estándar (Intermedio)</h4>
+                <ul class="rules-list">
+                    <li>5 proyectos para ganar</li>
+                    <li>Crisis individuales con penalizaciones completas</li>
+                    <li>Mecánica de riesgo activa</li>
+                </ul>
+                <h4>Modo Experto (Avanzado)</h4>
+                <ul class="rules-list">
+                    <li>7 proyectos para ganar</li>
+                    <li>Crisis múltiples (combinadas)</li>
+                    <li>Recursos más limitados (inician en 8 puntos)</li>
+                    <li>Cartas de "Evento Imprevisto" que modifican las reglas</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>📚 Extensión: Cartas de "Evento Imprevisto"</h3>
+                <p>Para el modo experto, se pueden agregar cartas de eventos que introducen aleatoriedad:</p>
+                <ul class="rules-list">
+                    <li><strong>🦠 Pandemia:</strong> Todos los recursos bajan 3 puntos</li>
+                    <li><strong>💰 Recorte Presupuestario:</strong> Pierdes 5 puntos de presupuesto</li>
+                    <li><strong>👨‍⚕️ Huelga de Personal:</strong> Pierdes 4 puntos de personal</li>
+                    <li><strong>🏆 Reconocimiento:</strong> Ganas 1 punto de proyecto inmediatamente</li>
+                    <li><strong>📜 Nueva Regulación:</strong> Debes descartar 2 cartas de enfoque y robar 2 nuevas</li>
+                    <li><strong>🤝 Alianza Estratégica:</strong> Intercambia 1 carta con otro jugador</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🎉 ¡Fin del Documento de Diseño!</h3>
+                <p>Este documento proporciona todas las especificaciones necesarias para producir el juego "Director de Hospital: El Desafío Administrativo". El juego combina mecánicas de cartas, gestión de recursos y resolución de problemas para crear una experiencia educativa memorable que enseña las 9 escuelas del pensamiento administrativo aplicadas a la gerencia en salud.</p>
+                <p style="margin-top: 15px;"><strong>Duración estimada:</strong> 45-60 minutos por partida</p>
+                <p><strong>Jugadores:</strong> 2-4</p>
+                <p><strong>Edad recomendada:</strong> 18+ (estudiantes universitarios y profesionales)</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all content
+            const contents = document.querySelectorAll('.content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Add click functionality to cards for flip effect (if needed)
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
